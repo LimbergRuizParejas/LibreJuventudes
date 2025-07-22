@@ -1,0 +1,15 @@
+# Crea el archivo .gitignore
+echo "node_modules/
+.vscode/
+dist/
+.env
+coverage/
+*.log
+*.env
+*.DS_Store
+npm-debug.log
+yarn-error.log
+libre-juventudes-backend/node_modules/
+libre-juventudes-frontend/node_modules/
+libre-juventudes-backend/dist/
+libre-juventudes-frontend/dist/" > .gitignore

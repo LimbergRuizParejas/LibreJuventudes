@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",                          // Código moderno
+    "lib": ["DOM", "ES2022"],                    // Soporte para navegador + ES2022
+    "module": "ESNext",                          // Módulos modernos
+    "moduleResolution": "bundler",               // Recomendado para Vite
+    "types": ["node"],                           // Añade compatibilidad con Node.js (como __dirname, path, etc.)
+    "allowJs": true,                             // Permite usar archivos JS si es necesario
+    "jsx": "react-jsx",                          // Habilita JSX moderno (sin React.createElement)
+    "noEmit": true,                              // No genera archivos JS al compilar
+    "strict": true,                              // Activa todas las comprobaciones estrictas
+    "forceConsistentCasingInFileNames": true,    // Evita errores por diferencias de mayúsculas
+    "esModuleInterop": true,                     // Compatibilidad con imports de CommonJS
+    "skipLibCheck": true,                        // Evita revisar tipos de dependencias externas
+    "isolatedModules": true,                     // Necesario para Vite + JSX
+    "resolveJsonModule": true                    // Permite importar archivos `.json`
+  },
+  "include": ["src"],                            // Solo compila archivos dentro de `src`
+  "references": [
+    { "path": "./tsconfig.node.json" }           // Útil si usas configuración separada para herramientas
+  ]
+}

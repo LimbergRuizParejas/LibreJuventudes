@@ -1,0 +1,60 @@
+/* Importaciones principales de Tailwind */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ======================== */
+/* 🎨 Estilos Personalizados */
+/* ======================== */
+
+/* Reseteo base (si lo necesitas) */
+body {
+  @apply bg-white text-gray-800 antialiased leading-relaxed;
+  font-family: 'Inter', system-ui, sans-serif;
+  min-height: 100vh;
+}
+
+/* Clases auxiliares globales */
+.container {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+.btn {
+  @apply inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm transition;
+}
+
+.btn-primary {
+  @apply bg-blue-600 text-white hover:bg-blue-700;
+}
+
+.btn-secondary {
+  @apply bg-gray-200 text-gray-800 hover:bg-gray-300;
+}
+
+.card {
+  @apply bg-white shadow-md rounded-lg p-6;
+}
+
+.title {
+  @apply text-2xl font-semibold text-gray-900 mb-4;
+}
+
+.text-muted {
+  @apply text-sm text-gray-500;
+}
+
+/* Animaciones opcionales */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fade-in 0.3s ease-out;
+}
