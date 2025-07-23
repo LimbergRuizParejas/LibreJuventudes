@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
-import { Link } from 'react-router-dom';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -24,18 +23,16 @@ const Login = () => {
       if (user.rol === 'admin') {
         navigate('/admin');
       } else {
-        navigate('/');
+        navigate('/perfil'); // redirige al perfil de usuario
       }
 
-      // Limpia los campos
+      // Limpia campos
       setEmail('');
       setPassword('');
     } catch (err: unknown) {
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError('Error al iniciar sesión');
-      }
+      setError(
+        err instanceof Error ? err.message : 'Error inesperado al iniciar sesión'
+      );
     } finally {
       setLoading(false);
     }
@@ -45,9 +42,11 @@ const Login = () => {
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-100 to-white px-4">
       <form
         onSubmit={handleSubmit}
-        className="w-full max-w-md bg-white p-8 rounded-lg shadow-md space-y-6"
+        className="w-full max-w-md bg-white p-8 rounded-lg shadow-xl space-y-6 animate-fade-in"
       >
-        <h2 className="text-2xl font-bold text-center text-blue-700">Inicia Sesión como Libre</h2>
+        <h2 className="text-2xl font-bold text-center text-blue-700">
+          Inicia sesión como Libre
+        </h2>
 
         {error && (
           <div className="text-red-600 text-sm text-center border border-red-300 rounded p-2 bg-red-50">
@@ -63,6 +62,7 @@ const Login = () => {
             id="email"
             type="email"
             required
+            autoComplete="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -77,6 +77,7 @@ const Login = () => {
             id="password"
             type="password"
             required
+            autoComplete="current-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -86,7 +87,7 @@ const Login = () => {
         <button
           type="submit"
           disabled={loading}
-          className={`w-full py-2 px-4 text-white font-semibold rounded transition ${
+          className={`w-full py-2 px-4 text-white font-semibold rounded transition duration-300 ${
             loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'
           }`}
         >
@@ -95,7 +96,7 @@ const Login = () => {
 
         <p className="text-sm text-center text-gray-500">
           ¿No tienes una cuenta?{' '}
-          <Link to="/register" className="text-blue-600 hover:underline">
+          <Link to="/register" className="text-blue-600 hover:underline font-medium">
             Regístrate
           </Link>
         </p>

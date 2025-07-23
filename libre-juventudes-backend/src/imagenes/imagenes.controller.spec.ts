@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ImagenesController } from './imagenes.controller';
 import { ImagenesService } from './imagenes.service';
 import { CreateImagenDto } from './dto/create-imagen.dto';
+import { Imagen } from './entities/imagen.entity';
 
 describe('ImagenesController', () => {
   let controller: ImagenesController;
@@ -33,28 +34,48 @@ describe('ImagenesController', () => {
   it('debería crear una imagen', async () => {
     const dto: CreateImagenDto = {
       titulo: 'Foto',
-      url: 'http://img.com/1.jpg',
       descripcion: 'Bonita',
     };
-    const result = { id: 1, ...dto };
-    jest.spyOn(service, 'create').mockResolvedValue(result as any);
 
-    expect(await controller.create(dto)).toEqual(result);
-    expect(service.create).toHaveBeenCalledWith(dto);
+    // Simular archivo subido
+    const file = {
+      originalname: 'foto.jpg',
+      filename: 'foto123.jpg',
+      mimetype: 'image/jpeg',
+      path: 'uploads/foto123.jpg',
+    } as Express.Multer.File;
+
+    const imagenEsperada: Imagen = {
+      id: 1,
+      titulo: dto.titulo,
+      descripcion: dto.descripcion,
+      url: file.filename,
+    };
+
+    jest.spyOn(service, 'create').mockResolvedValue(imagenEsperada);
+
+    const resultado = await controller.create(file, dto);
+    expect(resultado).toEqual(imagenEsperada);
+    expect(service.create).toHaveBeenCalledWith({
+      ...dto,
+      url: file.filename,
+    });
   });
 
   it('debería retornar todas las imágenes', async () => {
-    const imagenes = [{ id: 1, titulo: 'Foto' }];
+    const imagenes = [{ id: 1, titulo: 'Foto', url: 'img.jpg' }];
     jest.spyOn(service, 'findAll').mockResolvedValue(imagenes as any);
 
-    expect(await controller.findAll()).toEqual(imagenes);
+    const resultado = await controller.findAll();
+    expect(resultado).toEqual(imagenes);
   });
 
   it('debería retornar una imagen por id', async () => {
-    const imagen = { id: 1, titulo: 'Foto' };
+    const imagen = { id: 1, titulo: 'Foto', url: 'img.jpg' };
     jest.spyOn(service, 'findOne').mockResolvedValue(imagen as any);
 
-    expect(await controller.findOne('1')).toEqual(imagen);
+    const resultado = await controller.findOne('1');
+    expect(resultado).toEqual(imagen);
     expect(service.findOne).toHaveBeenCalledWith(1);
   });
 });

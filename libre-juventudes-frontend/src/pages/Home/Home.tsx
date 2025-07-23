@@ -41,6 +41,7 @@ const Home = () => {
   const [imagenes, setImagenes] = useState<Imagen[]>([]);
   const [index, setIndex] = useState(0);
 
+  // Cargar imágenes al montar
   useEffect(() => {
     const cargarImagenes = async () => {
       try {
@@ -53,15 +54,17 @@ const Home = () => {
     cargarImagenes();
   }, []);
 
+  // Rotar carrusel
   useEffect(() => {
+    if (imagenes.length < 2) return;
     const intervalo = setInterval(() => {
-      setIndex((prev) => (imagenes.length > 0 ? (prev + 1) % imagenes.length : 0));
-    }, 4000);
+      setIndex((prev) => (prev + 1) % imagenes.length);
+    }, 5000);
     return () => clearInterval(intervalo);
   }, [imagenes]);
 
   return (
-    <div className="space-y-12 px-4 md:px-16 py-10">
+    <div className="space-y-12 px-4 md:px-16 py-10 bg-gray-50">
       {/* Encabezado */}
       <section className="text-center">
         <h2 className="text-3xl font-bold text-blue-700 mb-4">
@@ -78,12 +81,15 @@ const Home = () => {
           Imágenes de nuestra lucha por ser Libre
         </h3>
 
-        {imagenes.length > 0 ? (
-          <div className="relative w-full max-w-4xl mx-auto overflow-hidden rounded shadow-lg">
+        {imagenes.length > 0 && imagenes[index] ? (
+          <div className="relative w-full max-w-4xl mx-auto overflow-hidden rounded shadow-lg bg-white">
             <img
-              src={imagenes[index].url}
+              src={`${import.meta.env.VITE_API_URL}/uploads/${imagenes[index].url}`}
               alt={imagenes[index].titulo || `Imagen ${index + 1}`}
-              className="w-full h-64 object-cover transition-all duration-700"
+              className="w-full h-64 sm:h-80 object-cover transition-opacity duration-700"
+              onError={(e) =>
+                (e.currentTarget.src = '/placeholder.jpg') // imagen por defecto si falla
+              }
             />
             <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex gap-2">
               {imagenes.map((_, i) => (
@@ -91,15 +97,15 @@ const Home = () => {
                   key={i}
                   onClick={() => setIndex(i)}
                   aria-label={`Imagen ${i + 1}`}
-                  className={`w-3 h-3 rounded-full border border-white ${
-                    index === i ? 'bg-red-600' : 'bg-white'
+                  className={`w-3 h-3 rounded-full border border-white transition ${
+                    index === i ? 'bg-red-600 scale-110' : 'bg-white'
                   }`}
                 />
               ))}
             </div>
           </div>
         ) : (
-          <p className="text-red-600 text-sm text-center">
+          <p className="text-center text-red-600 text-sm">
             No se pudieron cargar las imágenes del carrusel.
           </p>
         )}
@@ -112,15 +118,17 @@ const Home = () => {
         </h3>
         <div className="grid gap-6">
           {propuestas.map((prop, i) => (
-            <div
+            <article
               key={i}
               className="bg-white p-4 border-l-4 border-red-600 rounded shadow hover:shadow-xl transition"
             >
-              <h4 className="text-xl font-bold text-black mb-2">{prop.titulo}</h4>
-              <pre className="text-gray-800 leading-relaxed whitespace-pre-wrap">
+              <h4 className="text-xl font-bold text-black mb-2">
+                {prop.titulo}
+              </h4>
+              <p className="text-gray-800 whitespace-pre-wrap leading-relaxed">
                 {prop.contenido}
-              </pre>
-            </div>
+              </p>
+            </article>
           ))}
         </div>
       </section>

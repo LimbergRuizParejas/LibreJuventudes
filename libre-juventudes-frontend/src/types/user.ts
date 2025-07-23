@@ -20,6 +20,20 @@ export interface Usuario {
 
   /**
    * Rol del usuario: define el nivel de acceso dentro del sistema
+   * Puede ser 'usuario' o 'admin'
    */
   rol: 'usuario' | 'admin';
+
+  /**
+   * Ubicación geográfica del usuario (opcional)
+   * Ejemplo: "Santa Cruz, Bolivia"
+   */
+  ubicacion?: string;
+
+  /**
+   * Nombre del archivo de imagen de carnet (opcional)
+   * Generalmente se refiere al nombre del archivo guardado en /uploads
+   * Ejemplo: "carnet_juanperez.jpg"
+   */
+  imagen?: string;
 }

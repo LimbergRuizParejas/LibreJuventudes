@@ -6,22 +6,26 @@ import {
 } from 'typeorm';
 
 /**
- * Entidad Imagen que representa una tabla en PostgreSQL.
+ * La entidad `Imagen` representa un recurso de imagen cargado en el sistema.
+ * - `titulo`: título descriptivo de la imagen.
+ * - `url`: nombre del archivo almacenado en el servidor.
+ * - `descripcion`: texto opcional que acompaña la imagen.
+ * - `creadoEn`: fecha automática de creación.
  */
-@Entity()
+@Entity('imagenes')
 export class Imagen {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Column()
+  @Column({ type: 'varchar', length: 255 })
   titulo!: string;
 
-  @Column()
+  @Column({ type: 'varchar', length: 255 })
   url!: string;
 
-  @Column({ nullable: true })
+  @Column({ type: 'text', nullable: true })
   descripcion?: string;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'timestamp', name: 'creado_en' })
   creadoEn!: Date;
 }
